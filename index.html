@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Minute Meditation</title>
+    <style>
+        /* Reset margins and paddings for a clean slate */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Set body styles for a calming effect */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #bfc4c7; /* Soft, calming background color */
+            color: #333; /* Neutral text color */
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff; /* Clean white card */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for card */
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #2c3e50; /* Darker heading for contrast */
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px; /* Reduced margin for better spacing */
+            line-height: 1.6;
+            color: #7f8c8d; /* Softened text color */
+        }
+
+        .timer {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #27ae60; /* Calming green color for the timer */
+        }
+
+        .instructions {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+
+        /* Style the unordered list to remove default bullets and add custom spacing */
+        ul {
+            list-style-type: none; /* Remove default bullets */
+            padding: 0;
+            margin-bottom: 20px; /* Add spacing below the list */
+        }
+
+        ul li {
+            margin-bottom: 10px; /* Space between list items */
+            font-size: 1.2em;
+            color: #34495e; /* Darker color for the steps */
+        }
+        .repeat-btn {
+            padding: 12px 24px;
+            font-size: 1.2em;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none; /* Hidden initially */
+            transition: background-color 0.3s ease;
+        }
+
+        .repeat-btn:hover {
+            background-color: #2ecc71; /* Lighter green on hover */
+        }
+
+        /* Smooth fade-in animation for the repeat button */
+        .repeat-btn.show {
+            display: inline-block;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .post-meditation {
+            display: none; /* Hidden initially */
+            margin-top: 30px;
+            font-size: 1.3em;
+            color: #2c3e50; /* Darker text */
+        }
+
+        .post-meditation.show {
+            display: block; /* Show when meditation ends */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>2 Minute Meditation</h1>
+        <p>
+            Welcome to your 2 minute meditation.<br><br>
+            Before you begin, find a quiet place and ensure there are no distractions.<br>
+            Pause any music, such as Spotify or other apps, so you can focus fully on the meditation.<br><br>
+            Try to count the seconds silently in your mind as they pass.<br>
+            This exercise helps you center yourself and calm your thoughts.
+            There will be an tone at the start and end of the meditation, when you hear the second tone, gently blink your eyes open.
+            When you're ready:<br>
+            <ul>
+                <li>Sit comfortably.</li>
+                <li>Close your eyes.</li>
+                <li>Press <strong>Space</strong> to begin.</li>
+            </ul>
+
+        </p>
+        <div class="timer" id="timer">2:00</div>
+        <button class="repeat-btn" id="repeatBtn">Repeat</button>
+        <div class="post-meditation" id="postMeditation">
+            Great job! You've completed your 2-minute meditation.<br> 
+            Take a moment to notice how you feel and slowly bring yourself back to the present.
+            How did you do? How many seconds did you count?
+            If you feel you need to try this again, then use the repeat button above. 
+        </div>
+    </div>
+
+    <script>
+        // Timer variables
+        let timeLeft = 120; // 2 minutes in seconds
+        let timerInterval;
+        let isMeditating = false;
+
+        const timerDisplay = document.getElementById('timer');
+        const repeatBtn = document.getElementById('repeatBtn');
+
+        // Function to start the timer
+        function startTimer() {
+            playBeep(880, 200); // Play an 880 Hz beep for 200 ms at start
+
+            isMeditating = true;
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                } else {
+                    clearInterval(timerInterval);
+                    endMeditation();
+                }
+            }, 1000);
+        }
+
+        // Function to reset the timer and UI
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 120; // Reset time to 2 minutes
+            timerDisplay.textContent = '2:00';
+            repeatBtn.classList.remove('show'); // Hide repeat button
+            isMeditating = false; // Reset meditation state
+        }
+
+        // Function to end the meditation session
+        function endMeditation() {
+            playBeep(880, 300); // Play an 880 Hz beep for 300 ms at end
+            timerDisplay.textContent = "Time's up!";
+            repeatBtn.classList.add('show'); // Show repeat button with animation
+            isMeditating = false;
+        }
+
+        // Function to play a system beep using the AudioContext API
+        function playBeep(frequency, duration) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sine'; // Pure sine wave beep
+            oscillator.frequency.value = frequency; // Frequency in Hz
+            oscillator.start();
+
+            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration / 1000); // Stop after `duration` ms
+        }
+
+        // Detect spacebar to start the timer
+        document.body.addEventListener('keydown', function (event) {
+            if (event.code === 'Space' && !isMeditating) {
+                startTimer();
+            }
+        });
+
+        // Handle repeat button click
+        repeatBtn.addEventListener('click', function () {
+            resetTimer();
+        });
+    </script>
+</body>
+</html>
