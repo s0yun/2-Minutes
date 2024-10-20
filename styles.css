@@ -63,6 +63,26 @@ ul li {
     font-size: 1.2em;
     color: #34495e; /* Darker color for the steps */
 }
+/* General button styling for all buttons */
+button {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #2ecc71; 
+}
+
+button:active {
+    background-color: #1e8449; 
+}
 .repeat-btn {
     padding: 12px 24px;
     font-size: 1.2em;
