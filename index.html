@@ -4,133 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2-Minute Meditation</title>
-    <style>
-        /* Reset margins and paddings for a clean slate */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Set body styles for a calming effect */
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #bfc4c7; /* Soft, calming background color */
-            color: #333; /* Neutral text color */
-        }
-
-        .container {
-            text-align: center;
-            background-color: #ffffff; /* Clean white card */
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for card */
-            max-width: 600px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #2c3e50; /* Darker heading for contrast */
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px; /* Reduced margin for better spacing */
-            line-height: 1.6;
-            color: #7f8c8d; /* Softened text color */
-        }
-
-        .timer {
-            font-size: 3em;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #27ae60; /* Calming green color for the timer */
-        }
-
-        .instructions {
-            color: #7f8c8d;
-            margin-bottom: 40px;
-        }
-
-        /* Style the unordered list to remove default bullets and add custom spacing */
-        ul {
-            list-style-type: none; /* Remove default bullets */
-            padding: 0;
-            margin-bottom: 20px; /* Add spacing below the list */
-        }
-
-        ul li {
-            margin-bottom: 10px; /* Space between list items */
-            font-size: 1.2em;
-            color: #34495e; /* Darker color for the steps */
-        }
-        .repeat-btn {
-            padding: 12px 24px;
-            font-size: 1.2em;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: none; /* Hidden initially */
-            transition: background-color 0.3s ease;
-        }
-
-        .repeat-btn:hover {
-            background-color: #2ecc71; /* Lighter green on hover */
-        }
-
-        /* Smooth fade-in animation for the repeat button */
-        .repeat-btn.show {
-            display: inline-block;
-            animation: fadeIn 1s forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .post-meditation {
-            display: none; /* Hidden initially */
-            margin-top: 30px;
-            font-size: 1.3em;
-            color: #2c3e50; /* Darker text */
-        }
-
-        .post-meditation.show {
-            display: block; /* Show when meditation ends */
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
     <div class="container">
+        <h2>Welcome to your</h2>
         <h1>2 Minute Meditation</h1>
         <p>
-            Welcome to your 2 minute meditation.<br><br>
             Before you begin, find a quiet place and ensure there are no distractions.<br>
             Pause any music, such as Spotify or other apps, so you can focus fully on the meditation.<br><br>
             Try to count the seconds silently in your mind as they pass.<br>
-            This exercise helps you center yourself and calm your thoughts.
-            There will be an tone at the start and end of the meditation, when you hear the second tone, gently blink your eyes open.
-            When you're ready:<br>
+            This exercise helps you center yourself and calm your thoughts.<br>
+            There will be a tone at the start and end of the meditation. When you hear the second tone, gently open your eyes.<br><br>
+            <h3>When you're ready:</h3> <br>
             <ul>
                 <li>Sit comfortably.</li>
                 <li>Close your eyes.</li>
-                <li>Press <strong>Space</strong> to begin.</li>
+                <li>Press <strong>Space</strong> to begin, or use the button below.</li>
+                <li><button type="button" id="startBtn">🌞</button></li>
             </ul>
-
         </p>
+        
+        <!-- Advanced Settings Checkbox -->
+        <label>
+            <input type="checkbox" id="advancedSettingsCheckbox">Advanced Settings
+        </label>
+
+        <!-- Advanced Settings Options (initially hidden) -->
+        <div id="advancedSettings" style="display: none; margin-top: 20px;">
+            <label>
+                <input type="radio" name="audioOption" value="mute">Mute
+            </label><br>
+            <label>
+                <input type="radio" name="audioOption" value="tone" checked>Sine Tone
+            </label><br>
+            <label>
+                <input type="radio" name="audioOption" value="temple">Temple Bell
+            </label>
+        </div>
+
         <div class="timer" id="timer">2:00</div>
         <button class="repeat-btn" id="repeatBtn">Repeat</button>
         <div class="post-meditation" id="postMeditation">
@@ -140,7 +52,6 @@
             If you feel you need to try this again, then use the repeat button above. 
         </div>
     </div>
-
     <script>
         // Timer variables
         let timeLeft = 120; // 2 minutes in seconds
@@ -149,6 +60,37 @@
 
         const timerDisplay = document.getElementById('timer');
         const repeatBtn = document.getElementById('repeatBtn');
+        
+        // Mobile Users Button
+        const startBtn = document.getElementById('startBtn');
+
+        // BEGIN ADVANCED SETTINGS CHECKBOX
+                const advancedSettingsCheckbox = document.getElementById('advancedSettingsCheckbox');
+        const advancedSettings = document.getElementById('advancedSettings');
+        let selectedAudioOption = 'tone'; // Default to using the tone
+        const templeAudio = 'temple-bell.mp3'; // Path to the pre-uploaded audio file
+
+        window.onload = function() {
+        advancedSettingsCheckbox.checked = false; // Uncheck the Advanced Settings by default
+        advancedSettings.style.display = 'none'; // Ensure the settings are hidden
+        };
+
+        // Toggle advanced settings visibility
+        advancedSettingsCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                advancedSettings.style.display = 'block';
+            } else {
+                advancedSettings.style.display = 'none';
+            }
+        });
+
+        // Handle radio button selection for audio options
+        document.getElementsByName('audioOption').forEach(radio => {
+            radio.addEventListener('change', function() {
+                selectedAudioOption = this.value;
+            });
+        });
+        // END ADVANCED SETTINGS CHECKBOX
 
         // Function to start the timer
         function startTimer() {
@@ -185,27 +127,43 @@
             isMeditating = false;
         }
 
-        // Function to play a system beep using the AudioContext API
+        // playBeep function to handle different audio options
         function playBeep(frequency, duration) {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
+            if (selectedAudioOption === 'mute') {
+                return; // Do nothing if mute is selected
+            } else if (selectedAudioOption === 'temple') {
+                // Play the pre-uploaded audio file
+                const audio = new Audio(templeAudio);
+                audio.play();
+            } else {
+                // Default to the tone
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
 
-            oscillator.type = 'sine'; // Pure sine wave beep
-            oscillator.frequency.value = frequency; // Frequency in Hz
-            oscillator.start();
+                oscillator.type = 'sine'; // Pure sine wave beep
+                oscillator.frequency.value = frequency; // Frequency in Hz
+                oscillator.start();
 
-            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration / 1000); // Stop after `duration` ms
+                gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000); // Stop after `duration` ms
+            }
         }
-
         // Detect spacebar to start the timer
         document.body.addEventListener('keydown', function (event) {
             if (event.code === 'Space' && !isMeditating) {
                 startTimer();
+            }
+        });
+
+        // Mobile Users Button
+        // Detect button tap to start the timer
+        startBtn.addEventListener('click', function () {
+        if (!isMeditating) {
+            startTimer();
             }
         });
 
