@@ -27,20 +27,20 @@
         
         <!-- Advanced Settings Checkbox -->
         <label>
-            <input type="checkbox" id="advancedSettingsCheckbox"> Advanced Settings
+            <input type="checkbox" id="advancedSettingsCheckbox">Advanced Settings
         </label>
 
         <!-- Advanced Settings Options (initially hidden) -->
         <div id="advancedSettings" style="display: none; margin-top: 20px;">
             <label>
-                <input type="radio" name="audioOption" value="mute"> Mute
+                <input type="radio" name="audioOption" value="mute">Mute
             </label><br>
             <label>
-                <input type="radio" name="audioOption" value="tone" checked> Sine Tone
+                <input type="radio" name="audioOption" value="tone" checked>Sine Tone
             </label><br>
             <label>
-                <input type="radio" name="audioOption" value="temple"> Temple Bell
-            </label><br>
+                <input type="radio" name="audioOption" value="temple">Temple Bell
+            </label>
         </div>
 
         <div class="timer" id="timer">2:00</div>
@@ -51,12 +51,7 @@
             How did you do? How many seconds did you count?
             If you feel you need to try this again, then use the repeat button above. 
         </div>
-        
-    
     </div>
-
-
-
     <script>
         // Timer variables
         let timeLeft = 120; // 2 minutes in seconds
@@ -132,7 +127,7 @@
             isMeditating = false;
         }
 
-        // Modified the playBeep function to handle different audio options
+        // playBeep function to handle different audio options
         function playBeep(frequency, duration) {
             if (selectedAudioOption === 'mute') {
                 return; // Do nothing if mute is selected
@@ -157,24 +152,6 @@
                 oscillator.stop(audioContext.currentTime + duration / 1000); // Stop after `duration` ms
             }
         }
-
-//        // Function to play a system beep using the AudioContext API
-//        function playBeep(frequency, duration) {
-//            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-//            const oscillator = audioContext.createOscillator();
-//            const gainNode = audioContext.createGain();
-//
-//            oscillator.connect(gainNode);
-//            gainNode.connect(audioContext.destination);
-//
-//            oscillator.type = 'sine'; // Pure sine wave beep
-//            oscillator.frequency.value = frequency; // Frequency in Hz
-//            oscillator.start();
-//
-//            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-//            oscillator.stop(audioContext.currentTime + duration / 1000); // Stop after `duration` ms
-//        }
-
         // Detect spacebar to start the timer
         document.body.addEventListener('keydown', function (event) {
             if (event.code === 'Space' && !isMeditating) {
