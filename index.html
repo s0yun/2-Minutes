@@ -118,6 +118,11 @@
             playBeep(880, 300); // Play an 880 Hz beep for 300 ms at end
             timerDisplay.textContent = "Time's up!";
             repeatBtn.classList.add('show'); // Show repeat button with animation
+            
+            // Show the post-meditation message
+            const postMeditation = document.getElementById('postMeditation');
+            postMeditation.classList.add('show'); // Add class to show it
+            postMeditation.style.display = 'block'; // Ensure it's displayed
             isMeditating = false;
         }
 
