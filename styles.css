@@ -50,12 +50,6 @@ p {
     color: #27ae60; /* Calming green color for the timer */
 }
 
-/* Instruction text */
-.instructions {
-    color: #7f8c8d;
-    margin-bottom: 40px;
-}
-
 /* Style for unordered lists */
 ul {
     list-style-type: none; /* Remove default bullets */
@@ -135,74 +129,65 @@ button:active {
     display: block; /* Show when meditation ends */
 }
 
-/* Hide the default checkboxes and radio buttons */
-input[type="checkbox"], input[type="radio"] {
-    display: none;
-}
-
-/* Style for checkbox and radio labels */
-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 1.2em; /* Same as other text elements */
-    color: #34495e; /* Consistent text color */
-    cursor: pointer;
-    display: block;
-    position: relative;
-    user-select: none; /* Prevent text selection when clicking */
-}
-
-/* Custom checkbox and radio button style */
-input[type="checkbox"] + label::before, input[type="radio"] + label::before {
-    content: "";
-    text-align: center;
-    left: 0;
-    top: 0;
-    width: 25px;
-    height: 25px;
-    border: 2px solid #27ae60; /* Match button green color */
-    border-radius: 5px; /* Rounded corners */
-    background-color: white; /* Default background */
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Checkmark or radio fill when selected */
-input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
-    background-color: #27ae60; /* Green background when checked */
-    border-color: #27ae60;
-}
-
-/* Add checkmark for checkbox */
-input[type="checkbox"]:checked + label::after {
-    content: "\2714"; /* Unicode checkmark */
-    position: absolute;
-    left: 7px;
-    top: 2px;
-    font-size: 1.5em;
-    color: white; /* White checkmark */
-}
-
-/* Add dot for radio buttons */
-input[type="radio"]:checked + label::after {
-    content: "";
-    position: absolute;
-    left: 7px;
-    top: 7px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: white; /* White dot for radio button */
-}
-
-/* Hover effect for checkbox and radio */
-input[type="checkbox"] + label:hover::before, input[type="radio"] + label:hover::before {
-    border-color: #2ecc71; /* Slightly lighter green on hover */
-}
-
 /* Style for the Advanced Settings container */
 #advancedSettings {
     margin-top: 20px;
     padding: 10px;
-    border: 1px solid #ddd; /* Soft border to visually separate */
-    border-radius: 8px; /* Rounded corners for smooth appearance */
-    background-color: #f9f9f9; /* Light background */
+}
+
+/* Style the option list */
+#advancedSettings ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+#advancedSettings ul li {
+    padding: 10px;
+    border: 1px solid #27ae5f80;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 30%; /* Set a specific width for the buttons */
+    max-width: 300px; /* Optional: limit the maximum width */
+}
+
+
+/* Default option styling */
+.option {
+    background-color: #f9f9f9; /* Light background for options */
+}
+
+/* Style for the selected option */
+.option.selected {
+    background-color: #ddd; /* Light grey background when selected */
+    font-weight: bold; /* Bold text for selected option */
+}
+
+/* Hover effect */
+.option:hover {
+    background-color: #eaeaea; /* Slightly darker grey on hover */
+}
+
+/* Style for the Advanced Settings Button */
+#advancedSettingsBtn {
+    background-color: #27ae60; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#advancedSettingsBtn:hover {
+    background-color: #2ecc71; /* Lighter green on hover */
+}
+
+#advancedSettingsBtn.active {
+    background-color: #1e8449; /* Darker green when active */
 }
